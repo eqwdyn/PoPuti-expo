@@ -1,20 +1,13 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Platform,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Platform } from "react-native";
 // import { YandexMapView, MarkerView } from "expo-yandex-mapkit";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { BottomSheet } from "./Main/components/BottomSheet";
 import { Header } from "../widgets/Header";
-import { ModeToggle } from "./Main/components/ModeToggle";
+import { ModeToggle } from "../PagesComponents/Main/ModeToggle";
 import { useColors } from "../shared/hooks/use-colors";
-import { MapSearch } from "./Main/components/MapSearch";
+import { MapSearch } from "../PagesComponents/Main/MapSearch";
+import { BottomSheet } from "../PagesComponents/Main/BottomSheet";
 
 // Константы для отступов
 const BOTTOM_NAV_HEIGHT = Platform.OS === "ios" ? 90 : 70;
@@ -28,7 +21,6 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      {/* 1. МЕСТО ДЛЯ КАРТЫ (раскомментируйте, когда будете готовы) */}
       {/*
       <YandexMapView
         style={StyleSheet.absoluteFill}
@@ -53,13 +45,19 @@ export default function HomeScreen() {
         </MarkerView>
       </YandexMapView>
       */}
+      <View
+        style={[
+          StyleSheet.absoluteFill,
+          { backgroundColor: colors.background },
+        ]}
+      />
 
       <SafeAreaView style={styles.topOverlay} pointerEvents="box-none">
         <Header />
         <ModeToggle activeTab={activeTab} setActiveTab={setActiveTab} />
-        <MapSearch />
+        {/* <MapSearch /> */}
 
-        <View style={styles.geoButtonContainer}>
+        {/* <View style={styles.geoButtonContainer}>
           <TouchableOpacity
             style={[styles.geoButton, { backgroundColor: colors.white }]}
           >
@@ -69,7 +67,7 @@ export default function HomeScreen() {
               color={colors.textDark}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </SafeAreaView>
 
       <BottomSheet />

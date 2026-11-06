@@ -1,6 +1,6 @@
 import { NativeTabs } from "expo-router/native-tabs";
 import { useColorScheme } from "react-native";
-import { Colors } from "../shared/constants/theme";
+import { Colors } from "@shared/constants/theme";
 
 export default function AppTabs() {
   const scheme = useColorScheme();
@@ -8,10 +8,10 @@ export default function AppTabs() {
 
   return (
     <NativeTabs
-      backgroundColor={colors.background}
+      backgroundColor={colors.white}
       indicatorColor={colors.cardBg}
       tintColor={colors.primary}
-      labelStyle={{ selected: { color: colors.textDark } }}
+      labelStyle={{ selected: { color: colors.primary } }}
     >
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Карта</NativeTabs.Trigger.Label>

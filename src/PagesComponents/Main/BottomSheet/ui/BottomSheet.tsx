@@ -1,18 +1,18 @@
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { styles } from "./BottomSheet.style";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useState, type FC } from "react";
-import { useColorScheme } from "@shared/hooks/use-color-scheme.web";
-import { Colors } from "@shared/constants/theme";
+import { styles } from "./BottomSheet.style";
+import { BottomSheetProxy } from "@widgets/BottomSheetProxy";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useColors } from "@shared/hooks/use-colors";
 
-export const BottomSheet = () => {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "dark" ? "dark" : "light"];
+interface Props {}
 
+export const BottomSheet: FC<Props> = ({}) => {
+  const colors = useColors();
   const [activeCategory, setActiveCategory] = useState("Кафе");
+
   return (
-    <View style={[styles.bottomSheet, { backgroundColor: colors.white }]}>
-      <View style={[styles.dragHandle, { backgroundColor: colors.textGray }]} />
+    <BottomSheetProxy>
       <Text style={[styles.sheetTitle, { color: colors.textDark }]}>
         Что доставить?
       </Text>
@@ -84,6 +84,6 @@ export const BottomSheet = () => {
         </Text>
         <Ionicons name="arrow-forward" size={20} color={colors.white} />
       </TouchableOpacity>
-    </View>
+    </BottomSheetProxy>
   );
 };

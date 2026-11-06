@@ -15,24 +15,6 @@ export const ModeToggle: FC<Props> = ({ activeTab, setActiveTab }) => {
       <TouchableOpacity
         style={[
           styles.toggleBtn,
-          activeTab === "courier" && { backgroundColor: colors.primary },
-        ]}
-        onPress={() => setActiveTab("courier")}
-      >
-        <Text
-          style={[
-            styles.toggleText,
-            {
-              color: activeTab === "courier" ? colors.white : colors.textDark,
-            },
-          ]}
-        >
-          Я курьер
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={[
-          styles.toggleBtn,
           activeTab === "customer" && { backgroundColor: colors.primary },
         ]}
         onPress={() => setActiveTab("customer")}
@@ -46,6 +28,24 @@ export const ModeToggle: FC<Props> = ({ activeTab, setActiveTab }) => {
           ]}
         >
           Я заказчик
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[
+          styles.toggleBtn,
+          activeTab === "courier" && { backgroundColor: colors.primary },
+        ]}
+        onPress={() => setActiveTab("courier")}
+      >
+        <Text
+          style={[
+            styles.toggleText,
+            {
+              color: activeTab === "courier" ? colors.white : colors.textDark,
+            },
+          ]}
+        >
+          Я курьер
         </Text>
       </TouchableOpacity>
     </View>

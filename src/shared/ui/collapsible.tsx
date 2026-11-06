@@ -3,10 +3,10 @@ import { PropsWithChildren, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { Spacing } from "@/shared/constants/theme";
-import { useTheme } from "@/hooks/use-theme";
+import { ThemedText } from "@/shared/ui/Themed/themed-text";
+import { ThemedView } from "@/shared/ui/Themed/themed-view";
+import { Spacing } from "@shared/constants/theme";
+import { useTheme } from "@shared/hooks/use-theme";
 
 export function Collapsible({
   children,

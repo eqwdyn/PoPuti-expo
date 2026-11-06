@@ -16,7 +16,7 @@ export const Colors = {
     textGray: "#8E8E93",
     darkButton: "#2C2C2E",
     lightPurple: "#F0EBFF",
-    cardBg: "#F4F4F6",
+    cardBg: "#EEE9FF",
   },
   dark: {
     // Чуть более светлый фиолетовый, чтобы лучше читался на черном фоне
@@ -34,7 +34,7 @@ export const Colors = {
     // Темно-фиолетовый фон для иконок кафе/магазинов
     lightPurple: "#2C2445",
     // Фон для чипсов категорий и внутренних карточек
-    cardBg: "#2A2A30",
+    cardBg: "#292541",
   },
 } as const;
 

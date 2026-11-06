@@ -1,22 +1,16 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
-  bottomSheet: {
-    position: "absolute",
-    bottom: 10,
-    left: 20,
-    right: 20,
-    borderRadius: 32,
+  contentContainer: {
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
     padding: 24,
+    paddingBottom: Platform.OS === "ios" ? 40 : 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 10,
-  },
-  dragHandle: {
-    width: 40,
-    height: 4,
-    borderRadius: 2,
-    alignSelf: "center",
-    marginBottom: 20,
-    opacity: 0.3,
   },
   sheetTitle: {
     fontSize: 26,
