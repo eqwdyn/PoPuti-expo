@@ -1,98 +1,125 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+} from "react-native";
+// import { YandexMapView, MarkerView } from "expo-yandex-mapkit";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { BottomSheet } from "./Main/components/BottomSheet";
+import { Header } from "../widgets/Header";
+import { ModeToggle } from "./Main/components/ModeToggle";
+import { useColors } from "../shared/hooks/use-colors";
+import { MapSearch } from "./Main/components/MapSearch";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+// Константы для отступов
+const BOTTOM_NAV_HEIGHT = Platform.OS === "ios" ? 90 : 70;
+const MAP_CENTER = { latitude: 55.7539, longitude: 37.6208 };
 
 export default function HomeScreen() {
+  const [activeTab, setActiveTab] = useState<"courier" | "customer">(
+    "customer",
+  );
+  const colors = useColors();
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {/* 1. МЕСТО ДЛЯ КАРТЫ (раскомментируйте, когда будете готовы) */}
+      {/*
+      <YandexMapView
+        style={StyleSheet.absoluteFill}
+        cameraPosition={{ ...MAP_CENTER, zoom: 15 }}
+      >
+        <MarkerView
+          point={{ latitude: 55.756, longitude: 37.622 }}
+          anchor={{ x: 0.5, y: 1 }} 
+        >
+          <View style={styles.markerContainer}>
+            <View style={[styles.markerIconBg, { backgroundColor: colors.white }]}>
+              <MaterialCommunityIcons
+                name="coffee"
+                size={20}
+                color={colors.primary}
+              />
+            </View>
+            <View style={[styles.markerLabel, { backgroundColor: colors.white }]}>
+              <Text style={[styles.markerLabelText, { color: colors.textDark }]}>Кофе на углу</Text>
+            </View>
+          </View>
+        </MarkerView>
+      </YandexMapView>
+      */}
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <SafeAreaView style={styles.topOverlay} pointerEvents="box-none">
+        <Header />
+        <ModeToggle activeTab={activeTab} setActiveTab={setActiveTab} />
+        <MapSearch />
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
+        <View style={styles.geoButtonContainer}>
+          <TouchableOpacity
+            style={[styles.geoButton, { backgroundColor: colors.white }]}
+          >
+            <MaterialCommunityIcons
+              name="crosshairs-gps"
+              size={24}
+              color={colors.textDark}
+            />
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
-    </ThemedView>
+
+      <BottomSheet />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
   },
-  safeArea: {
+  topOverlay: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    zIndex: 10,
+  },
+
+  geoButtonContainer: {
     flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    paddingRight: 20,
+    marginTop: 10,
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+  geoButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 4,
   },
-  title: {
-    textAlign: 'center',
+  markerContainer: { alignItems: "center" },
+  markerIconBg: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    marginBottom: 6,
   },
-  code: {
-    textTransform: 'uppercase',
+  markerLabel: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    elevation: 3,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  markerLabelText: {
+    fontSize: 12,
+    fontWeight: "600",
   },
 });
