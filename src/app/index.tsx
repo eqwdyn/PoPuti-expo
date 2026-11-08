@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
   topOverlay: {
     paddingHorizontal: 20,
     paddingTop: 10,
-    zIndex: 10,
   },
 
   geoButtonContainer: {

@@ -1,6 +1,6 @@
 import { useState, type FC } from "react";
 import { styles } from "./BottomSheet.style";
-import { BottomSheetProxy } from "@widgets/BottomSheetProxy";
+import { BottomSheetProxy } from "@shared/ui/BottomSheetProxy";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColors } from "@shared/hooks/use-colors";
