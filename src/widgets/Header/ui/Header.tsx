@@ -1,23 +1,32 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import { styles } from "./Header.style";
-import { Ionicons } from "@expo/vector-icons";
-import { Colors } from "@shared/constants/theme";
-import { useColorScheme } from "@shared/hooks/use-color-scheme.web";
+import { ContentContainer } from "@shared/ui/ContentContainer";
+import { useColors } from "@shared/hooks/use-colors";
 
 export const Header = ({}) => {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === "dark" ? "dark" : "light"];
+  const colors = useColors();
   return (
-    <View style={styles.headerRow}>
-      <View>
-        <Text style={[styles.logoText, { color: colors.textDark }]}>
-          попути
-        </Text>
-        <Text style={[styles.subtitle, { color: colors.textGray }]}>
-          Всё рядом с тобой
-        </Text>
-      </View>
-      <TouchableOpacity
+    <View
+      style={[
+        styles.headerRow,
+        {
+          backgroundColor: colors.background,
+          borderBottomColor: colors.border,
+        },
+      ]}
+    >
+      <ContentContainer>
+        <View>
+          <Text style={[styles.logoText, { color: colors.textDark }]}>
+            попути
+          </Text>
+          <Text style={[styles.subtitle, { color: colors.textGray }]}>
+            Всё рядом с тобой
+          </Text>
+        </View>
+      </ContentContainer>
+
+      {/* <TouchableOpacity
         style={[styles.iconButton, { backgroundColor: colors.white }]}
       >
         <Ionicons
@@ -25,7 +34,7 @@ export const Header = ({}) => {
           size={24}
           color={colors.textDark}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

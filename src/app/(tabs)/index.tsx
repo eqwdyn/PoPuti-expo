@@ -1,23 +1,29 @@
-import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Platform } from "react-native";
 // import { YandexMapView, MarkerView } from "expo-yandex-mapkit";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Header } from "../widgets/Header";
-import { ModeToggle } from "../PagesComponents/Main/ModeToggle";
-import { useColors } from "../shared/hooks/use-colors";
-import { MapSearch } from "../PagesComponents/Main/MapSearch";
-import { BottomSheet } from "../PagesComponents/Main/BottomSheet";
+import { Header } from "../../widgets/Header";
+import { useColors } from "../../shared/hooks/use-colors";
+import { BottomSheet } from "../../PagesComponents/Main/BottomSheet";
+import { useRouter } from "expo-router";
+import { SwitchButtons } from "../../widgets/SwitchButtons";
 
 // Константы для отступов
 const BOTTOM_NAV_HEIGHT = Platform.OS === "ios" ? 90 : 70;
 const MAP_CENTER = { latitude: 55.7539, longitude: 37.6208 };
 
 export default function HomeScreen() {
-  const [activeTab, setActiveTab] = useState<"courier" | "customer">(
-    "customer",
-  );
+  const switchTabs = ["Я заказчик", "Я курьер"];
+  const [activeTab, setActiveTab] = useState<string>("Я заказчик");
   const colors = useColors();
+  const router = useRouter();
+  const isAuthed = false;
+
+  useEffect(() => {
+    if (!isAuthed) {
+      router.push("/login");
+    }
+  }, [isAuthed]);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -54,7 +60,12 @@ export default function HomeScreen() {
 
       <SafeAreaView style={styles.topOverlay} pointerEvents="box-none">
         <Header />
-        <ModeToggle activeTab={activeTab} setActiveTab={setActiveTab} />
+        <SwitchButtons
+          activeItem={activeTab}
+          setActiveItem={setActiveTab}
+          items={switchTabs}
+        />
+        {/* <ModeToggle activeTab={activeTab} setActiveTab={setActiveTab} /> */}
         {/* <MapSearch /> */}
 
         {/* <View style={styles.geoButtonContainer}>
@@ -82,6 +93,7 @@ const styles = StyleSheet.create({
   topOverlay: {
     paddingHorizontal: 20,
     paddingTop: 10,
+    zIndex: 10,
   },
 
   geoButtonContainer: {

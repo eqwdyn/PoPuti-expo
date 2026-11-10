@@ -42,7 +42,8 @@
           "flavor": "lite",
           "version": "4.42.0"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
