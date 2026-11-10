@@ -1,5 +1,5 @@
 import { type FC, type PropsWithChildren } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native";
 import { Header } from "@widgets/Header";
 import { ContentContainer } from "@shared/ui/ContentContainer";
 
@@ -9,6 +9,7 @@ export const ScrollLayout: FC<PropsWithChildren> = ({ children }) => {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
       stickyHeaderIndices={[0]}
+      stickyHeaderHiddenOnScroll={true}
     >
       <Header />
 

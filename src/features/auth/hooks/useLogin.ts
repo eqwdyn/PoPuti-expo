@@ -9,7 +9,11 @@ export function useLogin() {
   const queryClient = useQueryClient();
   const authApi = new AuthApi(api);
 
-  return useMutation<string, AxiosError<{ message: string }>, LoginDto>({
+  return useMutation<
+    string,
+    AxiosError<{ message: string; errors: Record<string, string[]> }>,
+    LoginDto
+  >({
     mutationFn: (dto) => authApi.login(dto),
     onSuccess: async (accessToken) => {
       await authStore.setAccessToken(accessToken);

@@ -12,17 +12,17 @@ export class AuthApi {
   constructor(private readonly api: AxiosInstance) {}
 
   async login(dto: LoginDto): Promise<string> {
-    const { data } = await this.api.post<{ accessToken: string }>(loginPath, {
-      login: dto.login,
-      password: dto.password,
-    });
+    const { data } = await this.api.post<{ accessToken: string }>(
+      loginPath,
+      dto,
+    );
     return data.accessToken;
   }
 
   async register(dto: RegisterDto): Promise<string> {
     const { data } = await this.api.post<{ accessToken: string }>(
       registerPath,
-      { login: dto.login, password: dto.password },
+      dto,
     );
     return data.accessToken;
   }
@@ -33,7 +33,12 @@ export class AuthApi {
   }
 
   async me(): Promise<User> {
-    const { data: user } = await this.api.get<User>(mePath);
-    return user;
+    try {
+      const { data: user } = await this.api.get<User>(mePath);
+      return user;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   }
 }

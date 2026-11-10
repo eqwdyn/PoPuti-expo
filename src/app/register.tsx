@@ -48,7 +48,7 @@ export default function RegisterScreen() {
           <View style={styles.footer}>
             <Text style={[styles.footerText, { color: colors.textGray }]}>
               Уже есть аккаунт?{" "}
-              <Link href="/login" asChild>
+              <Link href="/login">
                 <Text style={{ color: colors.primary, fontWeight: "600" }}>
                   Войти
                 </Text>

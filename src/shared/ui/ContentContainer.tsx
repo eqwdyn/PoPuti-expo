@@ -21,5 +21,6 @@ export const ContentContainer: FC<PropsWithChildren & ViewProps> = ({
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 24,
+    flex: 1,
   },
 });

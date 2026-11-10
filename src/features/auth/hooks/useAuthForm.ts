@@ -28,7 +28,6 @@ export function useAuthForm<T extends FormFields>({
     { title: string; desc: string } | undefined
   >(undefined);
 
-  // Универсальный сеттер для полей с авто-очисткой ошибки
   const setFieldValue = (field: keyof T, value: string) => {
     setValues((prev) => ({ ...prev, [field]: value }));
     if (fieldErrors[field as string]) {
@@ -50,9 +49,10 @@ export function useAuthForm<T extends FormFields>({
   };
 
   const handleApiError = (
-    error: AxiosError<{ message: string }>,
+    error: AxiosError<{ message: string; errors: Record<string, string[]> }>,
     customHandlers?: Record<number, () => void>,
   ) => {
+    // 1. Нет соединения
     if (!error.response) {
       setTopicError({
         title: "Нет соединения",
@@ -63,12 +63,28 @@ export function useAuthForm<T extends FormFields>({
 
     const status = error.response.status;
 
+    // 2. Кастомные обработчики для конкретных статусов (401, 409 и т.д.)
     if (customHandlers && customHandlers[status]) {
       customHandlers[status]();
       return;
     }
 
-    if (status === 500 || status === 502 || status === 503) {
+    // 3. Ошибки валидации DTO (400) — раскладываем по полям
+    const serverErrors = error.response.data?.errors;
+    if (status === 400 && serverErrors) {
+      const parsed: Record<string, string | undefined> = {};
+      for (const [field, messages] of Object.entries(serverErrors)) {
+        // Берём первое сообщение для каждого поля
+        parsed[field] = Array.isArray(messages)
+          ? messages[0]
+          : String(messages);
+      }
+      setFieldErrors(parsed);
+      return;
+    }
+
+    // 4. Остальные ошибки — в общий баннер
+    if (status >= 500) {
       setTopicError({ title: "Ошибка на сервере", desc: "Попробуйте позже." });
     } else {
       setTopicError({

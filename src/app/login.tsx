@@ -36,7 +36,7 @@ export default function LoginScreen() {
             <Text style={[styles.footerText, { color: colors.textGray }]}>
               Ещё нет аккаунта?
             </Text>
-            <Link href="/register" asChild>
+            <Link href="/register">
               <View
                 style={[
                   styles.registerButton,
