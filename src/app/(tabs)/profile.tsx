@@ -10,7 +10,11 @@ import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useColors } from "@shared/hooks/use-colors";
 import { ScrollLayout } from "@shared/ui/ScrollLayout";
 import { useMe } from "@features/auth/hooks/useMe";
-import { SafeBg } from "../../shared/ui/SafeBg";
+import { SafeBg } from "@shared/ui/SafeBg";
+import { AccountVerificationLevel } from "../../widgets/AccountVerificationLevel";
+import { CourierLevel } from "../../widgets/CourierLevel";
+import { AccountStat } from "../../widgets/AccountStats";
+import { BoxIcon } from "../../shared/ui/BoxIcon";
 
 export default observer(function ProfileScreen() {
   const colors = useColors();
@@ -57,7 +61,6 @@ export default observer(function ProfileScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Карточка баланса */}
         <View style={[styles.balanceCard, { backgroundColor: colors.primary }]}>
           <Text style={styles.balanceLabel}>Доступно к выводу</Text>
           <View style={styles.balanceRow}>
@@ -73,81 +76,23 @@ export default observer(function ProfileScreen() {
           </Text>
         </View>
 
-        {/* Статус аккаунта */}
-        <TouchableOpacity
-          style={[styles.accountStatusCard, { backgroundColor: colors.white }]}
-        >
-          <View
-            style={[styles.iconBox, { backgroundColor: colors.lightPurple }]}
-          >
-            <MaterialCommunityIcons
-              name="shield-check"
-              size={22}
-              color={colors.primary}
-            />
-          </View>
-          <View style={styles.accountStatusText}>
-            <Text
-              style={[styles.accountStatusTitle, { color: colors.textDark }]}
-            >
-              Аккаунт проверен
-            </Text>
-            <Text
-              style={[styles.accountStatusDesc, { color: colors.textGray }]}
-            >
-              Документы · личность · устройство
-            </Text>
-          </View>
-          <Ionicons name="chevron-forward" size={20} color={colors.textGray} />
-        </TouchableOpacity>
+        <AccountVerificationLevel level="pro" />
 
         {/* Блок со статистикой (Курьер / Заказчик) */}
         <View style={styles.statsRow}>
-          <View style={[styles.statCard, { backgroundColor: colors.white }]}>
-            <Text style={[styles.statLabel, { color: colors.textGray }]}>
-              Я курьер
-            </Text>
-            <View style={styles.statValueRow}>
-              <Text style={[styles.statValue, { color: colors.textDark }]}>
-                4,9
-              </Text>
-              <Ionicons name="star" size={16} color={colors.primary} />
-            </View>
-            <Text style={[styles.statSub, { color: colors.textGray }]}>
-              12 доставок
-            </Text>
-          </View>
-
-          <View style={[styles.statCard, { backgroundColor: colors.white }]}>
-            <Text style={[styles.statLabel, { color: colors.textGray }]}>
-              Я заказчик
-            </Text>
-            <View style={styles.statValueRow}>
-              <Text style={[styles.statValue, { color: colors.textDark }]}>
-                5,0
-              </Text>
-              <Ionicons name="star" size={16} color={colors.primary} />
-            </View>
-            <Text style={[styles.statSub, { color: colors.textGray }]}>
-              7 заказов
-            </Text>
-          </View>
+          <AccountStat
+            header="Я курьер"
+            points="4,9"
+            description="12 доставок"
+          />
+          <AccountStat
+            header="Я заказчик"
+            points="5,0"
+            description="7 заказов"
+          />
         </View>
 
-        {/* Карточка уровня (Тёмная) */}
-        <View
-          style={[styles.levelCard, { backgroundColor: colors.darkButton }]}
-        >
-          <View style={styles.levelHeader}>
-            <Text style={styles.levelLabel}>Ваш уровень</Text>
-            <View style={styles.levelBadge}>
-              <Text style={styles.levelBadgeText}>Новичок</Text>
-            </View>
-          </View>
-          <Text style={styles.levelTitle}>Заказы до 1 000 ₽</Text>
-          <Text style={styles.levelDesc}>Средний рейтинг → до 3 000 ₽</Text>
-          <Text style={styles.levelDesc}>Высокий рейтинг → крупные заказы</Text>
-        </View>
+        <CourierLevel level="starter" />
 
         {/* История заказов */}
         <View style={styles.historyHeader}>
@@ -162,15 +107,7 @@ export default observer(function ProfileScreen() {
         </View>
 
         <View style={[styles.orderCard, { backgroundColor: colors.white }]}>
-          <View
-            style={[styles.iconBox, { backgroundColor: colors.lightPurple }]}
-          >
-            <MaterialCommunityIcons
-              name="cube-outline"
-              size={22}
-              color={colors.primary}
-            />
-          </View>
+          <BoxIcon iconName="cube-outline" />
           <View style={styles.orderInfo}>
             <Text style={[styles.orderTitle, { color: colors.textDark }]}>
               Доставка из кафе
@@ -255,96 +192,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "rgba(255,255,255,0.7)",
   },
-  accountStatusCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-    borderRadius: 20,
-    marginBottom: 16,
-  },
-  iconBox: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  accountStatusText: {
-    flex: 1,
-  },
-  accountStatusTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 2,
-  },
-  accountStatusDesc: {
-    fontSize: 13,
-  },
+
   statsRow: {
     flexDirection: "row",
     gap: 12,
     marginBottom: 16,
   },
-  statCard: {
-    flex: 1,
-    padding: 16,
-    borderRadius: 20,
-  },
-  statLabel: {
-    fontSize: 13,
-    marginBottom: 8,
-  },
-  statValueRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginBottom: 4,
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: "700",
-  },
-  statSub: {
-    fontSize: 12,
-  },
-  levelCard: {
-    borderRadius: 24,
-    padding: 20,
-    marginBottom: 24,
-  },
-  levelHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 12,
-  },
-  levelLabel: {
-    fontSize: 13,
-    color: "rgba(255,255,255,0.7)",
-  },
-  levelBadge: {
-    backgroundColor: "#C8F58B",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  levelBadgeText: {
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#1A1A1A",
-  },
-  levelTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#FFFFFF",
-    marginBottom: 12,
-  },
-  levelDesc: {
-    fontSize: 14,
-    color: "rgba(255,255,255,0.6)",
-    marginBottom: 4,
-  },
+
   historyHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
