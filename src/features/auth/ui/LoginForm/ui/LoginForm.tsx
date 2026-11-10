@@ -14,9 +14,12 @@ export const LoginForm: FC = () => {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-  const [fieldError, setFieldError] = useState<string | undefined>(undefined);
 
-  // Состояние для общей ошибки (заголовок + описание)
+  const [fieldErrors, setFieldErrors] = useState<{
+    login?: string;
+    password?: string;
+  }>({});
+
   const [topicError, setTopicError] = useState<
     { title: string; desc: string } | undefined
   >(undefined);
@@ -24,9 +27,27 @@ export const LoginForm: FC = () => {
   const { mutateAsync: fetchLogin, isPending } = useLogin();
   const colors = useColors();
 
+  const validate = () => {
+    const newErrors: { login?: string; password?: string } = {};
+
+    if (login.length < 4) {
+      newErrors.login = "Логин должен содержать минимум 4 символа";
+    }
+    if (password.length < 4) {
+      newErrors.password = "Пароль должен содержать минимум 4 символа";
+    }
+
+    setFieldErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const submitHandle = async () => {
-    setFieldError(undefined);
+    setFieldErrors({});
     setTopicError(undefined);
+
+    if (!validate()) {
+      return;
+    }
 
     fetchLogin(
       { login, password },
@@ -43,7 +64,10 @@ export const LoginForm: FC = () => {
           const status = error.response.status;
 
           if (status === 401) {
-            setFieldError("Неверный логин или пароль");
+            setFieldErrors({
+              login: "Неверный логин или пароль",
+              password: "Неверный логин или пароль",
+            });
           } else if (status === 500 || status === 502 || status === 503) {
             setTopicError({
               title: "Ошибка на сервере",
@@ -60,7 +84,6 @@ export const LoginForm: FC = () => {
     );
   };
 
-  // Определяем текст на кнопке в зависимости от ошибки/загрузки
   const buttonText = isPending
     ? "Вход..."
     : topicError
@@ -76,19 +99,27 @@ export const LoginForm: FC = () => {
       <View style={[styles.formContainer, { backgroundColor: colors.white }]}>
         <InputGroup
           value={login}
-          setValue={setLogin}
+          setValue={(text) => {
+            setLogin(text);
+            if (fieldErrors.login)
+              setFieldErrors((prev) => ({ ...prev, login: undefined }));
+          }}
           placeholder="Введите логин"
           label="Логин"
-          error={fieldError}
+          error={fieldErrors.login}
         />
 
         <InputGroup
           label="Пароль"
           value={password}
-          setValue={setPassword}
+          setValue={(text) => {
+            setPassword(text);
+            if (fieldErrors.password)
+              setFieldErrors((prev) => ({ ...prev, password: undefined }));
+          }}
           placeholder="Введите пароль"
           secureTextEntry={!isPasswordVisible}
-          error={fieldError}
+          error={fieldErrors.password}
         >
           <TouchableOpacity
             style={styles.eyeIcon}
