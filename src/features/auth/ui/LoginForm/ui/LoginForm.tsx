@@ -1,5 +1,5 @@
 // LoginForm.tsx
-import { useState, type FC } from "react";
+import { FC, useState } from "react";
 import { styles } from "./LoginForm.style";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,82 +7,46 @@ import { useColors } from "@shared/hooks/use-colors";
 import { InputGroup } from "@shared/ui/InputGroup";
 import { Button } from "@shared/ui/Button";
 import { useLogin } from "../../../hooks/useLogin";
-import { AxiosError } from "axios";
 import { TopicError } from "@shared/ui/TopicError";
+import { useAuthForm } from "../../../hooks/useAuthForm";
 
 export const LoginForm: FC = () => {
-  const [login, setLogin] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
-
-  const [fieldErrors, setFieldErrors] = useState<{
-    login?: string;
-    password?: string;
-  }>({});
-
-  const [topicError, setTopicError] = useState<
-    { title: string; desc: string } | undefined
-  >(undefined);
-
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { mutateAsync: fetchLogin, isPending } = useLogin();
   const colors = useColors();
 
-  const validate = () => {
-    const newErrors: { login?: string; password?: string } = {};
-
-    if (login.length < 4) {
-      newErrors.login = "Логин должен содержать минимум 4 символа";
-    }
-    if (password.length < 4) {
-      newErrors.password = "Пароль должен содержать минимум 4 символа";
-    }
-
-    setFieldErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const submitHandle = async () => {
-    setFieldErrors({});
-    setTopicError(undefined);
-
-    if (!validate()) {
-      return;
-    }
-
-    fetchLogin(
-      { login, password },
-      {
-        onError: (error: AxiosError<{ message: string }>) => {
-          if (!error.response) {
-            setTopicError({
-              title: "Нет соединения",
-              desc: "Проверьте подключение к интернету и попробуйте еще раз.",
-            });
-            return;
-          }
-
-          const status = error.response.status;
-
-          if (status === 401) {
-            setFieldErrors({
-              login: "Неверный логин или пароль",
-              password: "Неверный логин или пароль",
-            });
-          } else if (status === 500 || status === 502 || status === 503) {
-            setTopicError({
-              title: "Ошибка на сервере",
-              desc: "Попробуйте позже.",
-            });
-          } else {
-            setTopicError({
-              title: "Что-то пошло не так",
-              desc: error.response.data?.message || "Попробуйте еще раз.",
-            });
-          }
+  const {
+    values,
+    setFieldValue,
+    fieldErrors,
+    topicError,
+    handleSubmit,
+    handleApiError,
+  } = useAuthForm({
+    initialValues: { login: "", password: "" },
+    validate: (vals) => {
+      const errors: Record<string, string> = {};
+      if (vals.login.length < 4)
+        errors.login = "Логин должен содержать минимум 4 символа";
+      if (vals.password.length < 4)
+        errors.password = "Пароль должен содержать минимум 4 символа";
+      return errors;
+    },
+    onSubmit: (vals, setTopicErr, setFieldErrs) => {
+      fetchLogin(vals, {
+        onError: (err) => {
+          handleApiError(err, {
+            401: () => {
+              setFieldErrs({
+                login: "Неверный логин или пароль",
+                password: "Неверный логин или пароль",
+              });
+            },
+          });
         },
-      },
-    );
-  };
+      });
+    },
+  });
 
   const buttonText = isPending
     ? "Вход..."
@@ -98,12 +62,8 @@ export const LoginForm: FC = () => {
 
       <View style={[styles.formContainer, { backgroundColor: colors.white }]}>
         <InputGroup
-          value={login}
-          setValue={(text) => {
-            setLogin(text);
-            if (fieldErrors.login)
-              setFieldErrors((prev) => ({ ...prev, login: undefined }));
-          }}
+          value={values.login}
+          setValue={(text) => setFieldValue("login", text)}
           placeholder="Введите логин"
           label="Логин"
           error={fieldErrors.login}
@@ -111,12 +71,8 @@ export const LoginForm: FC = () => {
 
         <InputGroup
           label="Пароль"
-          value={password}
-          setValue={(text) => {
-            setPassword(text);
-            if (fieldErrors.password)
-              setFieldErrors((prev) => ({ ...prev, password: undefined }));
-          }}
+          value={values.password}
+          setValue={(text) => setFieldValue("password", text)}
           placeholder="Введите пароль"
           secureTextEntry={!isPasswordVisible}
           error={fieldErrors.password}
@@ -139,7 +95,7 @@ export const LoginForm: FC = () => {
           </Text>
         </TouchableOpacity>
 
-        <Button onPress={submitHandle} disabled={isPending}>
+        <Button onPress={handleSubmit} disabled={isPending}>
           {buttonText}
         </Button>
       </View>

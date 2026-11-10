@@ -3,15 +3,17 @@ import {
   Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeBg } from "@shared/ui/SafeBg";
 import { useColors } from "@shared/hooks/use-colors";
 import { ScrollLayout } from "@shared/ui/ScrollLayout";
+import { RegisterForm } from "../features/auth/ui/RegisterForm";
+import { Link } from "expo-router";
 
 export default function RegisterScreen() {
   const colors = useColors();
+
   return (
     <SafeBg>
       <KeyboardAvoidingView
@@ -21,33 +23,37 @@ export default function RegisterScreen() {
         <ScrollLayout>
           <View style={styles.titleContainer}>
             <Text style={[styles.title, { color: colors.textDark }]}>
-              С возвращением!
+              Создать аккаунт
             </Text>
             <Text style={[styles.subtitle, { color: colors.textGray }]}>
-              Войдите, чтобы заказывать доставку или зарабатывать по пути.
+              Заказывайте и доставляйте по пути.
             </Text>
           </View>
 
-          {/* Форма */}
-          {/* <LoginForm /> */}
+          <RegisterForm />
 
-          {/* Подвал (Регистрация) */}
+          <View style={styles.agreementContainer}>
+            <Text style={[styles.agreementText, { color: colors.textGray }]}>
+              Нажимая «Создать аккаунт», вы принимаете{" "}
+              <Text style={{ color: colors.primary }}>
+                Условия использования
+              </Text>{" "}
+              и{" "}
+              <Text style={{ color: colors.primary }}>
+                Политику конфиденциальности
+              </Text>
+            </Text>
+          </View>
+
           <View style={styles.footer}>
             <Text style={[styles.footerText, { color: colors.textGray }]}>
-              Ещё нет аккаунта?
+              Уже есть аккаунт?{" "}
+              <Link href="/login" asChild>
+                <Text style={{ color: colors.primary, fontWeight: "600" }}>
+                  Войти
+                </Text>
+              </Link>
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.registerButton,
-                { backgroundColor: colors.cardBg },
-              ]}
-            >
-              <Text
-                style={[styles.registerButtonText, { color: colors.primary }]}
-              >
-                Войти
-              </Text>
-            </TouchableOpacity>
           </View>
         </ScrollLayout>
       </KeyboardAvoidingView>
@@ -58,24 +64,6 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: 24,
-    paddingTop: 20,
-    paddingBottom: 40,
-  },
-  header: {
-    marginBottom: 40,
-  },
-  logoText: {
-    fontSize: 28,
-    fontWeight: "800",
-    letterSpacing: -0.5,
-  },
-  logoSubtitle: {
-    fontSize: 14,
-    marginTop: 4,
   },
   titleContainer: {
     marginBottom: 32,
@@ -89,78 +77,21 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
   },
-  formContainer: {
-    borderRadius: 24,
-    padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 10,
-    elevation: 2,
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 12,
+  agreementContainer: {
+    marginTop: 24,
     paddingHorizontal: 16,
-    height: 52,
   },
-  input: {
-    flex: 1,
-    fontSize: 16,
-    height: "100%",
-  },
-  eyeIcon: {
-    padding: 8,
-    marginRight: -8,
-  },
-  forgotPasswordContainer: {
-    alignSelf: "flex-end",
-    marginBottom: 24,
-    marginTop: 4,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  loginButton: {
-    borderRadius: 16,
-    height: 56,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loginButtonText: {
-    color: "#FFFFFF", // Белый цвет текста кнопки остается всегда белым
-    fontSize: 16,
-    fontWeight: "600",
+  agreementText: {
+    fontSize: 12,
+    textAlign: "center",
+    lineHeight: 18,
   },
   footer: {
-    marginTop: "auto",
-    paddingTop: 40,
+    marginTop: 32,
     alignItems: "center",
+    paddingBottom: 20,
   },
   footerText: {
     fontSize: 14,
-    marginBottom: 16,
-  },
-  registerButton: {
-    borderRadius: 16,
-    height: 56,
-    width: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  registerButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
   },
 });

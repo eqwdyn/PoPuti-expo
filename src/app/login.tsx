@@ -1,17 +1,15 @@
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
 } from "react-native";
 import { useColors } from "../shared/hooks/use-colors";
-import { Header } from "../widgets/Header";
 import { LoginForm } from "../features/auth/ui/LoginForm";
 import { SafeBg } from "../shared/ui/SafeBg";
 import { ScrollLayout } from "../shared/ui/ScrollLayout";
+import { Link } from "expo-router";
 
 export default function LoginScreen() {
   const colors = useColors();
@@ -23,7 +21,6 @@ export default function LoginScreen() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollLayout>
-          {/* Заголовок */}
           <View style={styles.titleContainer}>
             <Text style={[styles.title, { color: colors.textDark }]}>
               С возвращением!
@@ -33,26 +30,26 @@ export default function LoginScreen() {
             </Text>
           </View>
 
-          {/* Форма */}
           <LoginForm />
 
-          {/* Подвал (Регистрация) */}
           <View style={styles.footer}>
             <Text style={[styles.footerText, { color: colors.textGray }]}>
               Ещё нет аккаунта?
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.registerButton,
-                { backgroundColor: colors.cardBg },
-              ]}
-            >
-              <Text
-                style={[styles.registerButtonText, { color: colors.primary }]}
+            <Link href="/register" asChild>
+              <View
+                style={[
+                  styles.registerButton,
+                  { backgroundColor: colors.cardBg },
+                ]}
               >
-                Зарегистрироваться
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[styles.registerButtonText, { color: colors.primary }]}
+                >
+                  Зарегистрироваться
+                </Text>
+              </View>
+            </Link>
           </View>
         </ScrollLayout>
       </KeyboardAvoidingView>
