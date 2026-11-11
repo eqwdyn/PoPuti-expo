@@ -6,12 +6,14 @@ import { useColors } from "@shared/hooks/use-colors";
 
 interface Props {
   header: string;
-  points: string;
+  points: number | null;
   description: string;
 }
 
 export const AccountStat: FC<Props> = ({ header, points, description }) => {
   const colors = useColors();
+  const hasRating = points !== null;
+
   return (
     <View style={[styles.statCard, { backgroundColor: colors.white }]}>
       <Text style={[styles.statLabel, { color: colors.textGray }]}>
@@ -19,12 +21,12 @@ export const AccountStat: FC<Props> = ({ header, points, description }) => {
       </Text>
       <View style={styles.statValueRow}>
         <Text style={[styles.statValue, { color: colors.textDark }]}>
-          {points}
+          {hasRating ? points.toFixed(1) : "—"}
         </Text>
-        <Ionicons name="star" size={16} color={colors.primary} />
+        {hasRating && <Ionicons name="star" size={16} color={colors.primary} />}
       </View>
       <Text style={[styles.statSub, { color: colors.textGray }]}>
-        {description}
+        {hasRating ? description : "Нет оценок"}
       </Text>
     </View>
   );
