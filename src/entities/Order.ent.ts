@@ -1,3 +1,4 @@
+import { OrderItem } from "./OrderItem.ent";
 import type { User } from "./User.ent";
 
 export type OrderStatus =
@@ -6,19 +7,6 @@ export type OrderStatus =
   | "IN_PROGRESS"
   | "DELIVERED"
   | "CANCELLED";
-
-export interface OrderItem {
-  id: number;
-  createdAt: string;
-  updatedAt: string;
-  orderId: number;
-
-  title: string;
-  quantity: string;
-  note: string | null;
-
-  isPurchased: boolean;
-}
 
 export interface Order {
   id: number;

@@ -10,6 +10,7 @@ interface Props extends PropsWithChildren {
   placeholder?: string;
   secureTextEntry?: boolean;
   error?: string;
+  multiline?: boolean;
 }
 
 export const InputGroup: FC<Props> = ({
@@ -20,6 +21,7 @@ export const InputGroup: FC<Props> = ({
   children,
   secureTextEntry = false,
   error,
+  multiline,
 }) => {
   const colors = useColors();
   const hasError = Boolean(error);
@@ -45,6 +47,7 @@ export const InputGroup: FC<Props> = ({
           onChangeText={setValue}
           autoCapitalize="none"
           secureTextEntry={secureTextEntry}
+          multiline={multiline}
         />
         {children}
       </View>

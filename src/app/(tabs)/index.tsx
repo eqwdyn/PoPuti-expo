@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { SwitchButtons } from "@widgets/SwitchButtons";
 import { SafeBg } from "@shared/ui/SafeBg";
 import { ScrollLayout } from "@shared/ui/ScrollLayout";
-import { Map } from "../../widgets/Map";
-import { BottomSheet } from "../../widgets/BottomSheet";
+import { Map } from "@features/MapPanel/ui/Map";
+import { BottomSheet } from "@features/MapPanel/ui/BottomSheet";
+import { bottomSheetStateStore } from "@features/MapPanel/stores/BottomSheetState.store";
 
 export default function HomeScreen() {
   const switchTabs = ["Я заказчик", "Я курьер"];
@@ -16,7 +17,12 @@ export default function HomeScreen() {
           <Map />
           <SwitchButtons
             activeItem={activeTab}
-            setActiveItem={setActiveTab}
+            setActiveItem={(item) => {
+              setActiveTab(item);
+              bottomSheetStateStore.setMode(
+                item === "Я заказчик" ? "client" : "courier",
+              );
+            }}
             items={switchTabs}
           />
         </ScrollLayout>
