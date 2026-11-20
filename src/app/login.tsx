@@ -5,10 +5,10 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
-import { useColors } from "../shared/hooks/use-colors";
-import { LoginForm } from "../features/auth/ui/LoginForm";
-import { SafeBg } from "../shared/ui/SafeBg";
-import { ScrollLayout } from "../shared/ui/ScrollLayout";
+import { useColors } from "@/shared/hooks/use-colors";
+import { LoginForm } from "@/features/auth/ui/LoginForm";
+import { SafeBg } from "@/shared/ui/SafeBg";
+import { ScrollLayout } from "@/shared/ui/ScrollLayout";
 import { Link } from "expo-router";
 
 export default function LoginScreen() {

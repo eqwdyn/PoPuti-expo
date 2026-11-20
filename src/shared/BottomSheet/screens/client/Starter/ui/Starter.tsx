@@ -1,13 +1,11 @@
-import { useState, type FC } from "react";
+import { useState } from "react";
 import { styles } from "./Starter.style";
 import { useColors } from "@shared/hooks/use-colors";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Header } from "../../../../components/Header";
 
-interface Props {}
-
-export const Starter: FC<Props> = ({}) => {
+export const Starter = () => {
   const colors = useColors();
   const [activeCategory, setActiveCategory] = useState("Кафе");
 

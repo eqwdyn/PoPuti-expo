@@ -6,7 +6,7 @@ import { authStore } from "@features/auth/stores/Auth.store";
 import { Ionicons } from "@expo/vector-icons";
 import { observer } from "mobx-react-lite";
 
-export const Header = observer(({}) => {
+export const Header = observer(() => {
   const colors = useColors();
 
   return (

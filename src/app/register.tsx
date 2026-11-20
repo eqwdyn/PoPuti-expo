@@ -8,7 +8,7 @@ import {
 import { SafeBg } from "@shared/ui/SafeBg";
 import { useColors } from "@shared/hooks/use-colors";
 import { ScrollLayout } from "@shared/ui/ScrollLayout";
-import { RegisterForm } from "../features/auth/ui/RegisterForm";
+import { RegisterForm } from "@/features/auth/ui/RegisterForm";
 import { Link } from "expo-router";
 
 export default function RegisterScreen() {

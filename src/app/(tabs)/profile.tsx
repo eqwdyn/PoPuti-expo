@@ -14,7 +14,7 @@ import { CourierLevel } from "@widgets/CourierLevel";
 import { AccountStat } from "@widgets/AccountStats";
 import { BoxIcon } from "@shared/ui/BoxIcon";
 import { formatJoinedIn } from "@shared/utils/formatJoinedIn";
-import { AccountHeader } from "../../widgets/AccountHeader";
+import { AccountHeader } from "@/widgets/AccountHeader";
 
 export default observer(function ProfileScreen() {
   const colors = useColors();

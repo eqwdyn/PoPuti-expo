@@ -1,5 +1,5 @@
 import { styles } from "./SwitchButtons.style";
-import { useColors } from "../../../shared/hooks/use-colors";
+import { useColors } from "@/shared/hooks/use-colors";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface Props {

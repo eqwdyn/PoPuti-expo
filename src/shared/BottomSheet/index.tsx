@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { bottomSheetStateStore } from "../../../stores/BottomSheetState.store";
-import { Starter } from "../screens/client/Starter";
-import { MakeOrderContent } from "../screens/client/MakeOrder";
+import { BottomSheetProxy } from "./components/BottomSheetProxy";
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet";
-import { BottomSheetProxy } from "./BottomSheetProxy";
+import { bottomSheetStateStore } from "./stores/BottomSheetState.store";
+import { Starter } from "./screens/client/Starter";
+import { MakeOrderContent } from "./screens/client/MakeOrder";
 
-export const BottomSheet = observer(({}) => {
+export const BottomSheet = observer(() => {
   return (
     <BottomSheetProxy>
       <BottomSheetScrollView

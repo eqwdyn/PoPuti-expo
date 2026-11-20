@@ -2,25 +2,32 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { useColors } from "@shared/hooks/use-colors";
 import { styles } from "./MakeOrderContent.style";
-import { CreateOrderItemDto } from "@entities/OrderItem.ent";
 import { RoutesCard } from "../components/RoutesCard";
 import { Header } from "../../../../components/Header";
 import { OrderList } from "../components/OrderList";
 import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
-
-const MOCK_ITEMS: CreateOrderItemDto[] = [
-  { title: "Молоко", note: "2,5–3,2%, любой марки", quantity: "1 л" },
-  { title: "Хлеб", note: "Ржаной, нарезанный", quantity: "1 шт." },
-  { title: "Яблоки", note: "Зелёные, не кислые", quantity: "1 кг" },
-];
+import { createdOrderItemsStore } from "../../../../stores/OrderItems.store";
+import { useAddressSuggestion } from "../hooks/useAddressSuggestion";
+import { InputGroup } from "../../../../components/InputGroup";
 
 export const MakeOrderContent = () => {
   const colors = useColors();
   const [price, setPrice] = useState("260");
   const [comment, setComment] = useState("");
-  const [fromAddress, setFromAddress] = useState<string>("");
-  const [toAddress, setToAddress] = useState<string>("");
 
+  const {
+    address: fromAddress,
+    setAddress: setFromAddress,
+    suggestions: fromSuggestions,
+  } = useAddressSuggestion();
+
+  const {
+    address: toAddress,
+    setAddress: setToAddress,
+    suggestions: toSuggestions,
+  } = useAddressSuggestion();
+
+  //   TODO: Decompose
   return (
     <>
       <Header
@@ -32,8 +39,13 @@ export const MakeOrderContent = () => {
         setFrom={setFromAddress}
         to={toAddress}
         setTo={setToAddress}
+        fromSuggestions={fromSuggestions}
+        toSuggestions={toSuggestions}
+        onSelectFrom={(suggestion) => setFromAddress(suggestion.title)}
+        onSelectTo={(suggestion) => setToAddress(suggestion.title)}
+        // FIXME: Error with closing app on click
       />
-      <OrderList items={MOCK_ITEMS} />
+      <OrderList items={createdOrderItemsStore.items} />
 
       <Text style={[styles.label, { color: colors.textDark }]}>
         Комментарий к заказу
@@ -48,6 +60,12 @@ export const MakeOrderContent = () => {
         value={comment}
         onChangeText={setComment}
         multiline
+      />
+      <InputGroup
+        label="Комментарий к заказу"
+        placeholder="Например, позвонить у подъезда"
+        value={comment}
+        setValue={setComment}
       />
 
       <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />

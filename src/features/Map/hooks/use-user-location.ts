@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
-import { getDistanceMeters } from "@shared/utils/get-distance-meters";
+import { getDistanceMeters } from "@/shared/utils/get-distance-meters";
 
 interface UserLocation {
   latitude: number;

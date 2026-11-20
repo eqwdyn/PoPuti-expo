@@ -1,10 +1,9 @@
 import { useEffect, useState, type FC } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import { YandexMapView, initialize } from "expo-yandex-mapkit";
-import { useColorScheme } from "@shared/hooks/use-color-scheme.web";
 import { useUserLocation } from "../hooks/use-user-location";
 import { CustomMarker } from "./CustomMarker";
-import { bottomSheetStateStore } from "../stores/BottomSheetState.store";
+import { bottomSheetStateStore } from "@/shared/BottomSheet/stores/BottomSheetState.store";
 
 const SEVASTOPOL = { latitude: 44.6166, longitude: 33.5254 };
 

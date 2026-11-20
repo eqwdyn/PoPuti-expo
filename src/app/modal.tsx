@@ -1,10 +1,7 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { router } from "expo-router";
-import { useColors } from "../shared/hooks/use-colors";
 
 export default function ModalScreen() {
-  const colors = useColors();
-
   return (
     <View style={styles.overlay}>
       <View style={styles.content}>

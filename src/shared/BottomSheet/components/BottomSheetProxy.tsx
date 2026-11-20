@@ -2,7 +2,7 @@ import React, { useRef, PropsWithChildren } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useColors } from "@shared/hooks/use-colors";
 import { observer } from "mobx-react-lite";
-import { bottomSheetStateStore } from "@/features/MapPanel/stores/BottomSheetState.store";
+import { bottomSheetStateStore } from "../stores/BottomSheetState.store";
 
 export const BottomSheetProxy = observer(({ children }: PropsWithChildren) => {
   const colors = useColors();
